@@ -14,21 +14,22 @@ public class Wall : MonoBehaviour{
     
     private bool wallSelected;
     private bool mouseButtonHoldDown;
-
-    private Vector3 screenPoint;
-    private Vector3 offset;
-    public List<Collider2D> colliders2D = new List<Collider2D>();
-
     
+    private Vector3 offset;
+    
+    public List<Transform> cells = new List<Transform>();
+    private Vector3 spriteOffset = new Vector3(0.5f, 0.5f, 0);
     
     // Start is called before the first frame update
     void Start(){
         originalColor = this.GetComponentInChildren<SpriteRenderer>().color;
-        var colliders = IsometricGrid.GetComponentsInChildren<Collider2D>();
 
-        foreach (var cell in colliders){
-            colliders2D.Add(cell);
+        var transforms = IsometricGrid.GetComponentsInChildren<SpriteRenderer>();
+        foreach (var grid in transforms){
+            cells.Add(grid.GetComponent<Transform>());
         }
+
+        cells.Remove(this.GetComponentInChildren<SpriteRenderer>().transform);
     }
     
     private void OnMouseEnter(){
@@ -43,19 +44,34 @@ public class Wall : MonoBehaviour{
         mouseButtonHoldDown = true;
         wallSelected = true;
         
-        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
         
     }
 
     private void OnMouseUp(){
-        mouseButtonHoldDown = false;
+        var trans = snapToCell();
+         transform.position = trans.position;
+         if(trans != transform)
+             transform.position -= transform.TransformVector(spriteOffset);
+         mouseButtonHoldDown = false;
+    }
+
+    Transform snapToCell(){
+        float minDistance = 2;
+        var minTransform = transform;
         
-        foreach (var cell in colliders2D){
-            if (this.GetComponent<Collider2D>().bounds.Intersects(cell.bounds)){
-                Debug.Log("touched cell!");
+        foreach (var cell in cells){
+            var calculatedCellPosition = transform.InverseTransformVector(cell.position) - spriteOffset;
+            var ownPosition = transform.InverseTransformVector(transform.position);
+            var currDistance = Vector3.Distance(calculatedCellPosition, ownPosition);
+            Debug.Log("cell position: " + calculatedCellPosition);
+            Debug.Log("own transform position: " + ownPosition);
+            if(currDistance < minDistance){
+                minDistance = currDistance;
+                minTransform = cell;
             }
         }
+        return minTransform;
     }
 
     private void OnMouseExit(){
@@ -66,9 +82,9 @@ public class Wall : MonoBehaviour{
     }
 
     private void OnMouseDrag(){
-        var curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        var curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
         var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        //Debug.Log("current position: " + curPosition);
+        Debug.Log("current position: " + curPosition);
         transform.position = curPosition;
     }
 }
