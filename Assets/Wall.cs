@@ -1,8 +1,6 @@
-
 using System;
-using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class Wall : MonoBehaviour{
     
@@ -12,49 +10,64 @@ public class Wall : MonoBehaviour{
     
     
     
-    private Vector3 lastMousePosition;
-    private bool buttonHoldDown;
+    //private bool buttonHoldDown;
     private bool wallSelected;
+    private bool mouseButtonHoldDown;
+
+    private Vector3 screenPoint;
+    private Vector3 offset;
+
+    [SerializeField]private List<Transform> collidingTransforms;
     
     
     // Start is called before the first frame update
     void Start(){
         originalColor = this.GetComponentInChildren<SpriteRenderer>().color;
+        collidingTransforms = new List<Transform>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     private void OnMouseEnter(){
-        if(!buttonHoldDown)
+        if(!wallSelected)
             this.GetComponentInChildren<SpriteRenderer>().color *= colorIncrease;
     }
 
     private void OnMouseDown(){
         if(!wallSelected)
             this.GetComponentInChildren<SpriteRenderer>().color *= colorDecrease;
-        
-        lastMousePosition = Input.mousePosition;
-        buttonHoldDown = true;
+
+        mouseButtonHoldDown = true;
         wallSelected = true;
+        
+        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        
     }
 
     private void OnMouseUp(){
-        buttonHoldDown = false;
+        mouseButtonHoldDown = false;
     }
 
     private void OnMouseExit(){
-        if (!buttonHoldDown){
+        if (!mouseButtonHoldDown){
             this.GetComponentInChildren<SpriteRenderer>().color = originalColor;
             wallSelected = false;
         }
     }
 
     private void OnMouseDrag(){
-        var distance = Input.mousePosition - lastMousePosition;
-        transform.position = distance/20;
+        var curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+        Debug.Log("current position: " + curPosition);
+        transform.position = curPosition;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other){
+        Debug.Log("entering colliding");
+        collidingTransforms.Add(other.transform);
+    }
+
+    private void OnCollisionExit2D(Collision2D other){
+        Debug.Log("exiting colliding");
+        collidingTransforms.Remove(other.transform);
     }
 }
