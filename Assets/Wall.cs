@@ -68,6 +68,9 @@ public class Wall : MonoBehaviour{
             var calculatedCellPosition = cell.position-spriteOffset;
 
             var ownPosition = transform.position;
+            
+            //dont cheat and set them to 0
+            //instead make it use the correct z-position
             ownPosition.z = 0;
             calculatedCellPosition.z = 0;
             var currDistance = Vector3.Distance(calculatedCellPosition, ownPosition);
