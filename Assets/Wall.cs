@@ -44,7 +44,7 @@ public class Wall : MonoBehaviour{
         mouseButtonHoldDown = true;
         wallSelected = true;
         
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z));
+        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
     }
 
@@ -57,12 +57,15 @@ public class Wall : MonoBehaviour{
     }
 
     Transform snapToCell(){
+        
         float minDistance = 2;
         var minTransform = transform;
         
         foreach (var cell in cells){
-            var calculatedCellPosition = transform.InverseTransformVector(cell.position) - spriteOffset;
-            var ownPosition = transform.InverseTransformVector(transform.position);
+            var calculatedCellPosition = cell.position;
+            var ownPosition = transform.position;
+            ownPosition.z = 0;
+            calculatedCellPosition.z = 0;
             var currDistance = Vector3.Distance(calculatedCellPosition, ownPosition);
             Debug.Log("cell position: " + calculatedCellPosition);
             Debug.Log("own transform position: " + ownPosition);
@@ -82,7 +85,7 @@ public class Wall : MonoBehaviour{
     }
 
     private void OnMouseDrag(){
-        var curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
+        var curScreenPoint = Input.mousePosition;
         var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
         Debug.Log("current position: " + curPosition);
         transform.position = curPosition;
