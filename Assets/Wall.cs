@@ -44,38 +44,33 @@ public class Wall : MonoBehaviour{
         mouseButtonHoldDown = true;
         wallSelected = true;
         
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        offset = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
     }
 
     private void OnMouseUp(){
         var trans = snapToCell();
          transform.position = trans.position;
+         Debug.Log("calculated cell position: " + trans.parent.localPosition);
+         Debug.Log("new transform position: " + transform.localPosition);
          if(trans != transform)
              transform.position -= transform.TransformVector(spriteOffset);
          mouseButtonHoldDown = false;
     }
 
     Transform snapToCell(){
+
+        var calculatedCellPosition = Vector3.zero;
+        var ownPosition = transform.position;
         
         float minDistance = 2;
         var minTransform = transform;
         
         foreach (var cell in cells){
-            //var calculatedCellPosition = transform.InverseTransformVector(cell.position) - spriteOffset;
-            //var ownPosition = transform.InverseTransformVector(transform.position);
-            //var calculatedCellPosition = cell.position-spriteOffset;
-            var calculatedCellPosition = cell.position-spriteOffset;
-
-            var ownPosition = transform.position;
+            calculatedCellPosition = cell.position-cell.TransformVector(spriteOffset);
             
-            //dont cheat and set them to 0
-            //instead make it use the correct z-position
-            ownPosition.z = 0;
-            calculatedCellPosition.z = 0;
             var currDistance = Vector3.Distance(calculatedCellPosition, ownPosition);
-            Debug.Log("cell position: " + calculatedCellPosition);
-            Debug.Log("own transform position: " + ownPosition);
+            
             if(currDistance < minDistance){
                 minDistance = currDistance;
                 minTransform = cell;
@@ -94,12 +89,13 @@ public class Wall : MonoBehaviour{
     private void OnMouseDrag(){
         var curScreenPoint = Input.mousePosition;
         var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        Debug.Log("current position: " + curPosition);
+        //Debug.Log("current position: " + curPosition);
+        
+        
         //change the position to local direction
-        transform.position = curPosition;
+        //transform.position = curPosition;
         //this will actually let the position "slide" along the grid
         //this will fuck up the visuals, so maybe create a clone of the sprite that moves well on the screen. 
-        //transform.localPosition = curPosition;
-        
+        transform.localPosition = curPosition;
     }
 }
