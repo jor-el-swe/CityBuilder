@@ -91,8 +91,7 @@ public class Wall : MonoBehaviour{
         var curScreenPoint = Input.mousePosition;
         var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
         
-        //here we need to transform the mouse movements, and change the curPosition 45 degrees
-        
+        //here we need to transform the mouse movements: rotate the coordinate system based on the rotation angle
         Vector3 translatedPosition = 
             new Vector3(
                 curPosition.x * Mathf.Cos(45) + curPosition.y*Mathf.Sin(45), 
@@ -103,7 +102,6 @@ public class Wall : MonoBehaviour{
         
         //change the position to local direction
         //this will actually let the position "slide" along the grid
-        
         transform.localPosition = curPosition;
         //transform.localPosition = translatedPosition;
     }
