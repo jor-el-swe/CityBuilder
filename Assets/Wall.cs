@@ -64,7 +64,9 @@ public class Wall : MonoBehaviour{
         foreach (var cell in cells){
             //var calculatedCellPosition = transform.InverseTransformVector(cell.position) - spriteOffset;
             //var ownPosition = transform.InverseTransformVector(transform.position);
+            //var calculatedCellPosition = cell.position-spriteOffset;
             var calculatedCellPosition = cell.position-spriteOffset;
+
             var ownPosition = transform.position;
             ownPosition.z = 0;
             calculatedCellPosition.z = 0;
@@ -90,6 +92,8 @@ public class Wall : MonoBehaviour{
         var curScreenPoint = Input.mousePosition;
         var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
         Debug.Log("current position: " + curPosition);
+        //change the position to local direction
         transform.position = curPosition;
+        //transform.localPosition = curPosition;
     }
 }
