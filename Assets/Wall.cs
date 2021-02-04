@@ -19,6 +19,7 @@ public class Wall : MonoBehaviour{
     
     public List<Transform> cells = new List<Transform>();
     private Vector3 spriteOffset = new Vector3(0.5f, 0.5f, 0);
+
     
     // Start is called before the first frame update
     void Start(){
@@ -89,13 +90,21 @@ public class Wall : MonoBehaviour{
     private void OnMouseDrag(){
         var curScreenPoint = Input.mousePosition;
         var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        //Debug.Log("current position: " + curPosition);
         
+        //here we need to transform the mouse movements, and change the curPosition 45 degrees
+        
+        Vector3 translatedPosition = 
+            new Vector3(
+                curPosition.x * Mathf.Cos(45) + curPosition.y*Mathf.Sin(45), 
+                -curPosition.x * Mathf.Sin(45) + curPosition.y*Mathf.Cos(45),
+                0);
+
+        Debug.Log("translated position: " + translatedPosition);
         
         //change the position to local direction
-        //transform.position = curPosition;
         //this will actually let the position "slide" along the grid
-        //this will fuck up the visuals, so maybe create a clone of the sprite that moves well on the screen. 
+        
         transform.localPosition = curPosition;
+        //transform.localPosition = translatedPosition;
     }
 }
