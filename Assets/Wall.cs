@@ -98,6 +98,7 @@ public class Wall : MonoBehaviour{
         //change the position to local direction
         transform.position = curPosition;
         //this will actually let the position "slide" along the grid
+        //this will fuck up the visuals, so maybe create a clone of the sprite that moves well on the screen. 
         //transform.localPosition = curPosition;
         
     }
