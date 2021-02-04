@@ -62,7 +62,9 @@ public class Wall : MonoBehaviour{
         var minTransform = transform;
         
         foreach (var cell in cells){
-            var calculatedCellPosition = cell.position;
+            //var calculatedCellPosition = transform.InverseTransformVector(cell.position) - spriteOffset;
+            //var ownPosition = transform.InverseTransformVector(transform.position);
+            var calculatedCellPosition = cell.position-spriteOffset;
             var ownPosition = transform.position;
             ownPosition.z = 0;
             calculatedCellPosition.z = 0;
