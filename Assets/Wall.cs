@@ -10,12 +10,8 @@ public class Wall : MonoBehaviour{
     private Color colorIncrease = new Color(1.3f, 1.3f, 1.3f); 
     private Color colorDecrease = new Color(0.5f, 0.5f, 0.5f);
     
-    
-    
     private bool wallSelected;
     private bool mouseButtonHoldDown;
-    
-    private Vector3 offset;
     
     public List<Transform> cells = new List<Transform>();
     private Vector3 spriteOffset = new Vector3(0.5f, 0.5f, 0);
@@ -44,9 +40,6 @@ public class Wall : MonoBehaviour{
 
         mouseButtonHoldDown = true;
         wallSelected = true;
-        
-        offset = gameObject.transform.localPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        
     }
 
     private void OnMouseUp(){
@@ -68,7 +61,7 @@ public class Wall : MonoBehaviour{
         var minTransform = transform;
         
         foreach (var cell in cells){
-            calculatedCellPosition = cell.position-cell.TransformVector(spriteOffset);
+            calculatedCellPosition = cell.position - cell.TransformVector(spriteOffset);
             
             var currDistance = Vector3.Distance(calculatedCellPosition, ownPosition);
             
@@ -89,20 +82,16 @@ public class Wall : MonoBehaviour{
 
     private void OnMouseDrag(){
         var curScreenPoint = Input.mousePosition;
-        var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+        var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) - transform.TransformVector(spriteOffset);
         
-        //here we need to transform the mouse movements: rotate the coordinate system based on the rotation angle
-        Vector3 translatedPosition = 
-            new Vector3(
-                curPosition.x * Mathf.Cos(45) + curPosition.y*Mathf.Sin(45), 
-                -curPosition.x * Mathf.Sin(45) + curPosition.y*Mathf.Cos(45),
-                0);
-
+        //here we need to transform the mouse movements: rotate the coordinate system
+        Vector3 translatedPosition  = new Vector3(curPosition.x*0.7f, -curPosition.x*0.7f,0);
+        translatedPosition  += new Vector3(curPosition.y,curPosition.y ,0);
+        
         Debug.Log("translated position: " + translatedPosition);
         
         //change the position to local direction
         //this will actually let the position "slide" along the grid
-        transform.localPosition = curPosition;
-        //transform.localPosition = translatedPosition;
+        transform.localPosition = translatedPosition;
     }
 }
