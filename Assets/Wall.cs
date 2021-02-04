@@ -97,6 +97,8 @@ public class Wall : MonoBehaviour{
         Debug.Log("current position: " + curPosition);
         //change the position to local direction
         transform.position = curPosition;
+        //this will actually let the position "slide" along the grid
         //transform.localPosition = curPosition;
+        
     }
 }
