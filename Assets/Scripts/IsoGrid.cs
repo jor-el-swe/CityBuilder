@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid : MonoBehaviour
+public class IsoGrid : MonoBehaviour
 {
     public List<Transform> cells = new List<Transform>();
     public Vector3 spriteOffset = new Vector3(0.5f, 0.5f, 0);

@@ -1,23 +1,23 @@
 using UnityEngine;
 public class Wall : MonoBehaviour{
     
-    private Grid grid;
+    private IsoGrid _isoGrid;
     
     void Start(){
-        grid = FindObjectOfType<Grid>();
-        grid.removeTransformFromGrid(this.GetComponentInChildren<SpriteRenderer>().transform);
+        _isoGrid = FindObjectOfType<IsoGrid>();
+        _isoGrid.removeTransformFromGrid(this.GetComponentInChildren<SpriteRenderer>().transform);
     }
 
     private void OnMouseUp(){
-        var trans = grid.snapToCell(this.transform);
+        var trans = _isoGrid.snapToCell(this.transform);
         this.transform.position = trans.position;
         if(trans != this.transform)
-            this.transform.position -= this.transform.TransformVector(grid.spriteOffset);
+            this.transform.position -= this.transform.TransformVector(_isoGrid.spriteOffset);
     }
     
     private void OnMouseDrag(){
         var curScreenPoint = Input.mousePosition;
-        var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) - this.transform.TransformVector(grid.spriteOffset);
+        var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) - this.transform.TransformVector(_isoGrid.spriteOffset);
         
         //here we need to transform the mouse movements: rotate the coordinate system
         Vector3 translatedPosition  = new Vector3(curPosition.x*0.7f, -curPosition.x*0.7f,0);
