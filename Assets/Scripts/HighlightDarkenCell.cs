@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class HighlightDarkenCell : MonoBehaviour
 {
-    
     private Color originalColor;
     private Color colorIncrease = new Color(1.3f, 1.3f, 1.3f); 
     private Color colorDecrease = new Color(0.5f, 0.5f, 0.5f);
@@ -12,12 +8,9 @@ public class HighlightDarkenCell : MonoBehaviour
     private bool wallSelected;
     private bool mouseButtonHoldDown;
     
-    
-
     void Start()
     {
         originalColor = this.GetComponentInChildren<SpriteRenderer>().color;
-        
     }
     
     private void OnMouseEnter(){
@@ -42,11 +35,5 @@ public class HighlightDarkenCell : MonoBehaviour
             this.GetComponentInChildren<SpriteRenderer>().color = originalColor;
             wallSelected = false;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
