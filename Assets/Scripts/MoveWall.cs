@@ -1,5 +1,5 @@
 using UnityEngine;
-public class Wall : MonoBehaviour{
+public class MoveWall : MonoBehaviour{
     
     private IsoGrid _isoGrid;
     
