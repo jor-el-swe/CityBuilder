@@ -13,7 +13,7 @@ public class DuplicateWall : MonoBehaviour{
     private void OnMouseDown(){
         Debug.Log("dragging/duplication");
         if (transform.position==startingPosition){
-            var clone = Instantiate(gameObject. transform.parent);
+            var clone = Instantiate(gameObject, transform.parent);
             clone.GetComponentInChildren<SpriteRenderer>().color = startingColor;
         }
     }

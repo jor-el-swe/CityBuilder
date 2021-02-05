@@ -23,10 +23,15 @@ public class IsoGrid : MonoBehaviour
             
             var currDistance = Vector3.Distance(calculatedCellPosition, cellPosition);
             
-            if(currDistance < minDistance){
+            if(currDistance < minDistance && !cell.GetComponentInParent<TileInfo>().ContainsWall){
                 minDistance = currDistance;
                 minTransform = cell;
             }
+        }
+
+        //we have attached a wall
+        if (minTransform != snapTransform){
+            minTransform.GetComponentInParent<TileInfo>().ContainsWall = true;
         }
         
         return minTransform;
