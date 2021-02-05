@@ -133,21 +133,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4489403169353285165, guid: bf66a3a3d6e1fc54391eab2eb8b930eb, type: 3}
   m_PrefabInstance: {fileID: 4489403169678138542}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &352133765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 352133762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffeb2a9f1d92f1340a91e587e292d98d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grassPrefab: {fileID: 744186162185845577, guid: b6149de720508ee4b897b5b8cbe82d3d, type: 3}
-  width: 10
-  height: 10
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,11 +233,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 695733149253216066, guid: 210e84fa8493f374ba35af3ae93c81fb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 695733149253216066, guid: 210e84fa8493f374ba35af3ae93c81fb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 695733149253216066, guid: 210e84fa8493f374ba35af3ae93c81fb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -299,6 +284,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3100564104198662177, guid: bf66a3a3d6e1fc54391eab2eb8b930eb, type: 3}
+      propertyPath: width
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3100564104198662177, guid: bf66a3a3d6e1fc54391eab2eb8b930eb, type: 3}
+      propertyPath: height
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4489403169353285164, guid: bf66a3a3d6e1fc54391eab2eb8b930eb, type: 3}
       propertyPath: m_Name
       value: IsometricGrid
